@@ -1,0 +1,7 @@
+[project]
+name = "github-user-activity"
+version = "0.1.0"
+description = "Application to get user activity from Github API and display in the terminal."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = []
