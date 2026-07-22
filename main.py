@@ -1,3 +1,4 @@
+import argparse
 import json
 from urllib.error import URLError
 from urllib.request import Request, urlopen
@@ -6,6 +7,7 @@ from urllib.request import Request, urlopen
 def format_event_output(
     event_type: str, repo_name: str, event_count: int
 ) -> str | None:
+    """Structures the event output in a user-friendly formatting."""
     match event_type:
         case "CreateEvent":
             output = f"- Created {str(event_count) + ' branch' if event_count == 1 else str(event_count) + ' branches'} in {repo_name}"
@@ -20,6 +22,7 @@ def format_event_output(
 
 
 def get_github_activity(username: str) -> list[dict] | None:
+    """Gets Github activity for the supplied username from the Github API."""
     # test if username exists
     req = Request(f"https://api.github.com/users/{username}/events")
     try:
@@ -39,7 +42,8 @@ def get_github_activity(username: str) -> list[dict] | None:
         return events
 
 
-def group_events(gh_events: list[dict]):
+def group_events(gh_events: list[dict]) -> dict:
+    """Groups events by event type and repo with a count summary."""
     event_grps = {}
     for event in gh_events:
         event_type = event.get("type")
@@ -55,7 +59,8 @@ def group_events(gh_events: list[dict]):
     return event_grps
 
 
-def output_event_groups(event_grps: list):
+def output_event_groups(event_grps: list) -> None:
+    """Iterates through the events and outputs a line for every event type/repo combo to the terminal."""
     print("Output:")
 
     for event_type, repos in event_grps.items():
