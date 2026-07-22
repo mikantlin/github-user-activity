@@ -71,10 +71,18 @@ def output_event_groups(event_grps: list) -> None:
 
 
 def main():
-    events = get_github_activity("mikantlin")
+    # set up command line arguments
+    parser = argparse.ArgumentParser(description="Get activity of a Github user.")
+    parser.add_argument("username", help="username of the Github user.")
+    args = parser.parse_args()
+
+    # get user's activity
+    events = get_github_activity(args.username)
     if events:
         # roll up events
         grouped_events = group_events(events)
+
+        # output to terminal
         output_event_groups(grouped_events)
 
 
