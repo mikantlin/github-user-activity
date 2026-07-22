@@ -2,8 +2,6 @@ import json
 from urllib.error import URLError
 from urllib.request import Request, urlopen
 
-import pandas as pd
-
 
 def get_github_activity(username: str) -> list[dict] | None:
     # test if username exists
@@ -26,23 +24,22 @@ def get_github_activity(username: str) -> list[dict] | None:
         return events
 
 
-def group_events(events: list[dict]):
-    # clean up event data that we need
-    stripped_events = [
-        {
-            "event_type": event.get("type"),
-            "repo": event.get("repo").get("name"),
-        }
-        for event in events
-    ]
+def group_events(gh_events: list[dict]):
+    event_grps = {}
+    for event in gh_events:
+        event_type = event.get("type")
+        if not event_grps.get(event_type):
+            event_grps[event_type] = {}
 
-    # get counts for each event type and associated repo
-    events_df = pd.DataFrame(stripped_events)
-    event_grp_df = (
-        events_df.groupby(["event_type", "repo"]).size().reset_index(name="count")
-    )
+            repo_name = event.get("repo").get("name")
 
-    return event_grp_df
+            if repo_name not in event_grps[event_type]:
+                event_grps[event_type][repo_name] = 0
+
+            event_grps[event_type][repo_name] += 1
+
+    print(event_grps)
+    return event_grps
 
 
 def main():
@@ -50,7 +47,6 @@ def main():
     if events:
         # roll up events
         grouped_events = group_events(events)
-        print(grouped_events)
 
 
 if __name__ == "__main__":
