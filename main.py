@@ -10,7 +10,7 @@ def format_event_output(
     """Structures the event output in a user-friendly formatting."""
     match event_type:
         case "CreateEvent":
-            output = f"- Created {str(event_count) + ' branch' if event_count == 1 else str(event_count) + ' branches'} in {repo_name}"
+            output = f"- Created {str(event_count)} {'branch' if event_count == 1 else 'branches'} in {repo_name}"
         case "PushEvent":
             output = f"- Pushed {str(event_count)} commit(s) to {repo_name}"
         case "WatchEvent":
