@@ -13,8 +13,6 @@ def format_event_output(
             output = f"- Pushed {str(event_count)} commit(s) to {repo_name}"
         case "WatchEvent":
             output = f"- Starred {repo_name}"
-        case "PullRequestReviewEvent":
-            output = f"- Reviewed {str(event_count)} pull request(s) for {repo_name}"
         case _:
             return None
 
