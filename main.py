@@ -31,12 +31,12 @@ def group_events(gh_events: list[dict]):
         if not event_grps.get(event_type):
             event_grps[event_type] = {}
 
-            repo_name = event.get("repo").get("name")
+        repo_name = event.get("repo").get("name")
 
-            if repo_name not in event_grps[event_type]:
-                event_grps[event_type][repo_name] = 0
+        if repo_name not in event_grps[event_type]:
+            event_grps[event_type][repo_name] = 0
 
-            event_grps[event_type][repo_name] += 1
+        event_grps[event_type][repo_name] += 1
 
     print(event_grps)
     return event_grps
